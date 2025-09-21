@@ -1,0 +1,297 @@
+<!--
+README: Cara pakai dan deploy
+
+1) Menjalankan secara lokal:
+   - Simpel: buka file ini (index.html) di browser. Untuk fitur fetch atau local fonts, jalankan server lokal:
+     * Python 3: python -m http.server 8000  -> buka http://localhost:8000
+     * VSCode: install extension Live Server -> klik "Go Live"
+
+2) Deploy ke GitHub Pages:
+   - Buat repo baru, commit index.html, push.
+   - Di GitHub repo -> Settings -> Pages -> pilih branch main / root -> Save. Tunggu beberapa menit.
+
+3) Deploy ke Netlify (cara drag & drop):
+   - Buka app.netlify.com -> Sites -> New site -> Deploy manually -> drag & drop index.html
+
+4) Deploy ke Vercel:
+   - Buka vercel.com -> New Project -> import repo -> Deploy
+
+5) Mengubah konten:
+   - Edit section teks, ganti logo / gambar di bagian <header>.
+   - Jika ingin menambahkan form backend, hubungkan form ke server (Netlify Forms atau endpoint sendiri).
+
+Catatan teknis:
+- Tailwind dipakai via CDN untuk cepat (untuk production sebaiknya build Tailwind).
+- AOS dipakai untuk animasi on-scroll.
+- GSAP + ScrollTrigger dipakai untuk efek parallax dan interaksi premium.
+
+-->
+
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>End-to-End Cyber Security Solutions</title>
+  <meta name="description" content="SOC - End to End Cyber Security Solutions | Purple Team, Red Team, Blue Team">
+
+  <!-- Tailwind CDN (untuk prototyping cepat) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* Simple visual tweaks */
+    :root{--glass: rgba(255,255,255,0.04)}
+    .hero-illu{background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);}
+    .glass{background: var(--glass); backdrop-filter: blur(6px)}
+    /* small responsive improvements */
+    @media (min-width:1024px){
+      .hero-title{font-size: clamp(2.25rem, 4vw, 4rem)}
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-slate-100 antialiased leading-relaxed">
+
+  <!-- NAV -->
+  <nav class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-md bg-gradient-to-br from-indigo-600 to-pink-500 flex items-center justify-center font-bold">SOC</div>
+      <div class="ml-2 font-semibold">End-to-End Cyber Security</div>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="#services" class="text-sm hover:underline">Solusi</a>
+      <a href="#tech" class="text-sm hover:underline">Teknologi</a>
+      <a href="#contact" class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow">Hubungi</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero-illu min-h-[70vh] flex items-center">
+    <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-8 items-center">
+      <div data-aos="fade-up">
+        <p class="text-sm text-indigo-300 font-medium">SOC · Managed Detection & Response</p>
+        <h1 class="hero-title mt-4 font-extrabold text-3xl md:text-5xl">Lindungi Bisnismu dari Ancaman Siber<br class="hidden md:block"> dengan Pendekatan End-to-End</h1>
+        <p class="mt-4 text-gray-300 max-w-xl">Kami menggabungkan Red Team (offense), Blue Team (defense), dan Purple Team (kolaborasi) — didukung automasi, intelijen, dan prosedur SOC untuk deteksi dan respon cepat.</p>
+
+        <div class="mt-6 flex gap-3">
+          <a href="#story" class="px-5 py-3 bg-white text-gray-900 rounded-md font-semibold shadow">Pelajari Cerita Kami</a>
+          <a href="#contact" class="px-5 py-3 border border-gray-700 rounded-md">Jadwalkan Demo</a>
+        </div>
+
+        <div class="mt-8 grid grid-cols-3 gap-3 text-sm text-gray-300">
+          <div class="glass p-3 rounded-md">
+            <div class="font-semibold">24/7 Monitoring</div>
+            <div class="text-xs">SOC aktif</div>
+          </div>
+          <div class="glass p-3 rounded-md">
+            <div class="font-semibold">Respon Cepat</div>
+            <div class="text-xs">SLA singkat</div>
+          </div>
+          <div class="glass p-3 rounded-md">
+            <div class="font-semibold">100+ Klien</div>
+            <div class="text-xs">Industri beragam</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Illustration / Parallax area -->
+      <div class="relative" data-aos="fade-left">
+        <div id="parallax" class="w-full h-[380px] rounded-2xl overflow-hidden glass flex items-center justify-center">
+          <!-- layered shapes for parallax -->
+          <svg id="layer1" class="absolute w-[420px] h-[420px]" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+            <circle cx="100" cy="100" r="80" fill="url(#g1)" fill-opacity="0.12"/>
+          </svg>
+          <svg id="layer2" class="absolute w-[300px] h-[300px]" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="80" fill="#ef4444" fill-opacity="0.08"/>
+          </svg>
+          <div class="relative z-10 text-center">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="SOC" class="w-48 h-48 object-cover rounded-lg shadow-2xl border border-white/5"/>
+            <div class="mt-3 text-sm text-gray-200">Procedures · People · Platform</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- STORY FLOW: Problem -> Approach -> Services -->
+  <main class="max-w-6xl mx-auto px-6 py-16">
+
+    <!-- Problem -->
+    <section id="story" class="mb-20" data-aos="fade-up">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold">Masalah yang Sering Dihadapi Perusahaan</h2>
+        <p class="mt-3 text-gray-400 max-w-2xl mx-auto">Phishing yang menargetkan karyawan, kebocoran data di darkweb, sistem yang sulit dimonitor — masalah ini memerlukan pendekatan menyeluruh, bukan sekedar satu solusi.</p>
+      </div>
+
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="p-6 bg-gray-800 rounded-xl" data-aos="fade-up" data-aos-delay="100">
+          <h3 class="font-semibold">Tingkat Serangan Meningkat</h3>
+          <p class="mt-2 text-gray-400">Volume dan kompleksitas serangan terus naik — sumber ancaman dari dalam & luar organisasi.</p>
+        </div>
+        <div class="p-6 bg-gray-800 rounded-xl" data-aos="fade-up" data-aos-delay="200">
+          <h3 class="font-semibold">Karyawan Rentan</h3>
+          <p class="mt-2 text-gray-400">Kurangnya awareness membuat serangan social engineering sangat efektif.</p>
+        </div>
+        <div class="p-6 bg-gray-800 rounded-xl" data-aos="fade-up" data-aos-delay="300">
+          <h3 class="font-semibold">Sistem Terfragmentasi</h3>
+          <p class="mt-2 text-gray-400">Aset tersebar di cloud, on-prem, dan perangkat endpoint — sulit dipantau terpadu.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Approach -->
+    <!-- Approach -->
+<section class="mb-20" data-aos="fade-right">
+    <h2 class="text-2xl font-bold text-center">Pendekatan Kami</h2>
+    <p class="mt-3 text-gray-400 text-center max-w-2xl mx-auto">
+      Kombinasi ofensif (Red), defensif (Blue), dan kolaborasi (Purple) menghasilkan siklus perbaikan berkelanjutan.
+    </p>
+  
+    <div class="mt-8 grid md:grid-cols-3 gap-6">
+      <a href="purple.html" class="block p-6 bg-gradient-to-br from-purple-900/40 to-transparent rounded-xl hover:scale-105 transition transform" data-aos="zoom-in">
+        <h4 class="text-purple-300 font-semibold">Purple Team</h4>
+        <p class="mt-2 text-gray-300">Gap Analysis, Security Awareness, Breach Simulation, Threat Hunting.</p>
+      </a>
+  
+      <a href="red.html" class="block p-6 bg-gradient-to-br from-red-900/30 to-transparent rounded-xl hover:scale-105 transition transform" data-aos="zoom-in" data-aos-delay="150">
+        <h4 class="text-red-300 font-semibold">Red Team</h4>
+        <p class="mt-2 text-gray-300">Darkweb Monitoring, OSINT, Phishing Simulation, Penetration Testing.</p>
+      </a>
+  
+      <a href="blue.html" class="block p-6 bg-gradient-to-br from-sky-900/30 to-transparent rounded-xl hover:scale-105 transition transform" data-aos="zoom-in" data-aos-delay="300">
+        <h4 class="text-sky-300 font-semibold">Blue Team</h4>
+        <p class="mt-2 text-gray-300">XDR, NDR, EDR, Digital Forensic, Cyber Asset Management.</p>
+      </a>
+    </div>
+  </section>
+
+    <!-- Services (cards) -->
+    <section id="services" class="mb-20" data-aos="fade-up">
+      <h2 class="text-2xl font-bold text-center">Solusi Kami (Ringkasan)</h2>
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="p-6 bg-gray-800 rounded-xl">
+          <h4 class="font-semibold">Gap Analysis & Mitigation</h4>
+          <p class="mt-2 text-gray-400 text-sm">Penilaian menyeluruh untuk menentukan prioritas perbaikan.</p>
+        </div>
+        <div class="p-6 bg-gray-800 rounded-xl">
+          <h4 class="font-semibold">Phishing Simulation</h4>
+          <p class="mt-2 text-gray-400 text-sm">Program pelatihan berbasis simulasi nyata.</p>
+        </div>
+        <div class="p-6 bg-gray-800 rounded-xl">
+          <h4 class="font-semibold">Digital Forensic & IR</h4>
+          <p class="mt-2 text-gray-400 text-sm">Investigasi insiden dan containment cepat.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech -->
+    <section id="tech" class="mb-20" data-aos="fade-left">
+      <h2 class="text-2xl font-bold text-center">Teknologi & Platform</h2>
+      <p class="mt-3 text-gray-400 text-center max-w-2xl mx-auto">Hyperautomation Platform, Incident Response Platform, MDR — mengotomatiskan deteksi dan respon untuk skala besar.</p>
+
+      <div class="mt-8 flex flex-wrap gap-4 justify-center">
+        <span class="px-4 py-2 bg-gray-800 rounded-full text-sm">Hyperautomation</span>
+        <span class="px-4 py-2 bg-gray-800 rounded-full text-sm">Incident Response</span>
+        <span class="px-4 py-2 bg-gray-800 rounded-full text-sm">MDR</span>
+        <span class="px-4 py-2 bg-gray-800 rounded-full text-sm">XDR / EDR</span>
+        <span class="px-4 py-2 bg-gray-800 rounded-full text-sm">NDR</span>
+      </div>
+    </section>
+
+    <!-- Case / Stats -->
+    <section class="mb-20" data-aos="fade-up">
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-6 bg-gradient-to-br from-indigo-900/40 rounded-xl text-center">
+          <div class="text-4xl font-extrabold">24/7</div>
+          <div class="mt-2 text-gray-300">Monitoring SOC</div>
+        </div>
+        <div class="p-6 bg-gradient-to-br from-rose-900/30 rounded-xl text-center">
+          <div class="text-4xl font-extrabold"><span class="counter">15</span>m</div>
+          <div class="mt-2 text-gray-300">Average TTR (Time-to-Respond)</div>
+        </div>
+        <div class="p-6 bg-gradient-to-br from-emerald-900/30 rounded-xl text-center">
+          <div class="text-4xl font-extrabold">100+</div>
+          <div class="mt-2 text-gray-300">Klien Terlayani</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CTA -->
+  <section class="bg-indigo-700/90 py-16" data-aos="zoom-in">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h3 class="text-2xl font-bold">Siap Melindungi Bisnismu?</h3>
+      <p class="mt-3 text-indigo-100">Jadwalkan demo atau hubungi tim kami untuk konsultasi gratis.</p>
+      <div class="mt-6">
+        <a href="#contact" class="px-6 py-3 bg-white text-indigo-700 rounded-md font-semibold">Hubungi Kami</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER + CONTACT -->
+  <footer id="contact" class="max-w-6xl mx-auto px-6 py-12 text-gray-300">
+    <div class="grid md:grid-cols-2 gap-8">
+      <div>
+        <h4 class="text-xl font-bold">Hubungi Kami</h4>
+        <p class="mt-2">Email: <a href="mailto:hello@example.com" class="text-indigo-300">hello@example.com</a></p>
+        <p class="mt-2">Alamat: Jakarta, Indonesia</p>
+      </div>
+      <form class="space-y-4" onsubmit="handleContact(event)">
+        <input type="text" id="name" placeholder="Nama" class="w-full p-3 rounded-md bg-gray-800 border border-gray-700" required>
+        <input type="email" id="email" placeholder="Email" class="w-full p-3 rounded-md bg-gray-800 border border-gray-700" required>
+        <textarea id="message" rows="3" placeholder="Pesan" class="w-full p-3 rounded-md bg-gray-800 border border-gray-700" required></textarea>
+        <div class="flex gap-3">
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-md">Kirim</button>
+          <button type="button" onclick="dummySchedule()" class="px-4 py-2 border border-gray-700 rounded-md">Jadwalkan Demo</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="mt-8 text-sm text-gray-500">© <span id="year"></span> End-to-End Cyber Security</div>
+  </footer>
+
+  <!-- Scripts: AOS init, GSAP parallax, small interactions -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({duration:900, once:true});
+
+    // GSAP parallax for the two svg layers
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to('#layer1', {
+      y: -50,
+      rotation: 10,
+      scrollTrigger: { trigger: '#parallax', start: 'top center', scrub: true }
+    });
+    gsap.to('#layer2', {
+      y: 30,
+      rotation: -8,
+      scrollTrigger: { trigger: '#parallax', start: 'top center', scrub: true }
+    });
+
+    // Simple contact handler (demo) - replace with real endpoint
+    function handleContact(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      alert('Terima kasih, ' + name + '! Pesanmu sudah terkirim (demo).');
+      e.target.reset?.();
+    }
+
+    function dummySchedule(){
+      alert('Fitur jadwalkan demo: silakan hubungi hello@example.com');
+    }
+
+    // footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
